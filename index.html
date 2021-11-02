@@ -10,7 +10,7 @@
     <title>WeatherApp project</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-info bg-dark text-info">
+    <!-- <nav class="navbar navbar-expand-lg navbar-info bg-dark text-info">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Weather App</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,13 +37,20 @@
             </ul>
           </div>
         </div>
-      </nav>
+    </nav> -->
 
-    <div class="container flex">
-        <h1>Simple Weather App</h1>
+    <div class="container d-flex flex-column">
+        <h1 class="mt-4 d-flex justify-content-center">Simple Weather App</h1>
+        <div class="alert alert-warning alert-dismissible fade show hidden">
+            Please enter city name.
+        </div>
+        <div class="mt-4 d-flex justify-content-center">
             <input id="city" type="text" placeholder="Search for a city..." required>
             <input id="getcity" type="button" value="Forecast">
-        <div id="results"></div>
+        </div>
+        <div id="weather" class="mt-4 d-flex text-center card"></div>
+
+        <div id="forecast" class="d-flex justify-content-center"></div>
     </div>
 
     <script src="script.js"></script>
