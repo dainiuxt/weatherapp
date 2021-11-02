@@ -7133,7 +7133,8 @@ label.panel-block {
   background-color: #fafafa;
   padding: 3rem 1.5rem 6rem; }
 
-:root {
+:root,
+.footer {
   background-color: #fffbeb; }
 
 .hidden {
@@ -7146,3 +7147,7 @@ label.panel-block {
   border-radius: 25px;
   background-color: #ebfffc;
   color: #00d1b2; }
+
+figure {
+  background-color: #00d1b2;
+  border-radius: 50%; }

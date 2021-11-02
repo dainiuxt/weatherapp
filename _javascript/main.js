@@ -89,6 +89,22 @@ function displayData(data) {
     mediaContent.appendChild(cityName);
     media.appendChild(mediaContent);
 
+    const cityPopulation = document.createElement("p");
+    cityPopulation.classList.add("subtitle","is-6");
+    const population = data.city.population;
+    let popRatio;
+    let popWords;
+    if (population < 51201) {
+        popRatio = Math.round(51201 / population, 2)
+        popWords = ' times smaller than Twin peaks.'
+    } else {
+        popRatio = Math.round(population / 51201, 2);
+        popWords = ' times bigger than Twin Peaks.'
+    }
+    cityPopulation.textContent = 'Population: ' + population + '\r\n'
+                                + popRatio + ' ' + popWords;
+    cityName.appendChild(cityPopulation);
+    
     const weatherDescription = document.createElement("p");
     weatherDescription.classList.add("subtitle","is-6");
     weatherDescription.textContent = descriptionNow;

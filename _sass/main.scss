@@ -28,7 +28,8 @@ $primary-invert: $pink-invert;
 
 @import "../node_modules/bulma/bulma";
 
-:root {
+:root,
+.footer {
     background-color: $warning-light;
 }
 
@@ -44,4 +45,9 @@ $primary-invert: $pink-invert;
     border-radius: 25px;
     background-color: $primary-light;
     color: $primary;
+}
+
+figure {
+    background-color: $primary;
+    border-radius: 50%;
 }
