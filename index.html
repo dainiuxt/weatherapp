@@ -1,61 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<html>
+  <head>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>WeatherApp project</title>
-</head>
-<body>
-    <!-- <nav class="navbar navbar-expand-lg navbar-info bg-dark text-info">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Weather App</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="settings nav-item">
-                    <label for="units">Units: </label>
-                    <select id="units">
-                        <option value="metric">metric</option>
-                        <option value="imperial">imperial</option>
-                        <option value="absolute">scientific</option>
-                    </select> 
-                </li>
-                <li class="language nav-item">
-                    <label for="language">Forecast language: </label>
-                    <select id="language">
-                        <option value="lt">Lietuvių</option>
-                        <option value="en">English</option>
-                        <option value="ru">По русски</option>
-                    </select> 
-                </li>
-            </ul>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Weather app</title>
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <section class="hero is-small is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns">
+            <div class="column is-8-desktop is-offset-2-desktop">
+              <h1 class="title is-2 is-spaced">
+                Simple Weather App
+              </h1>
+              <h2 class="subtitle is-4">
+                Simple weather app with <strong><a href="https://openweathermap.org">OpenWeather API</a></strong><br>
+                Choose your city below for weather conditions and forecast.
+              </h2>
+            </div>
           </div>
         </div>
-    </nav> -->
-
-    <div class="container d-flex flex-column">
-        <h1 class="mt-4 d-flex justify-content-center">Simple Weather App</h1>
-        <div class="alert alert-warning alert-dismissible fade show hidden">
-            Please enter city name.
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-8-desktop is-offset-2-desktop">
+            <div id="warn" class="notification is-warning hidden">
+              Please enter/check city name.
+            </div>
+            <div class="content container">
+              <div class="field has-addons columns is-centered">
+                <div class="control">
+                  <input id="city" class="input is-primary is-rounded" type="text" placeholder="Search for a city..." required>
+                </div>
+                <div class="control">
+                  <input id="getcity" class="button is-primary is-rounded" type="button" value="Forecast">
+                </div>
+              </div>
+              <div id="weather" >
+                <!-- Bulma card -->
+              </div>
+              <div id="forecast" >
+                <!-- Bulma list -->
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="mt-4 d-flex justify-content-center">
-            <input id="city" type="text" placeholder="Search for a city..." required>
-            <input id="getcity" type="button" value="Forecast">
+      </div>
+    </section>
+    <footer class="footer has-text-centered">
+      <div class="container">
+         <div class="columns">
+          <div class="column is-8-desktop is-offset-2-desktop">
+            <p>
+              <small>
+                &copy; 2021, <a href="https://github.com/dainiuxt">dainiuxt</a> 
+              </small>
+            </p>
+            <p style="margin-top: 1rem;">
+              <a href="http://bulma.io">
+                <img src="made-with-bulma.png" alt="Made with Bulma" width="128" height="24">
+              </a>
+            </p>
+          </div>
         </div>
-        <div id="weather" class="mt-4 d-flex text-center card"></div>
-
-        <div id="forecast" class="d-flex justify-content-center"></div>
-    </div>
-
-    <script src="script.js"></script>
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-</body>
+      </div>
+    </footer>
+    <script type="text/javascript" src="lib/main.js"></script>
+  </body>
 </html>
