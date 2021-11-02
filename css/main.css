@@ -7140,7 +7140,7 @@ label.panel-block {
 .hidden {
   display: none; }
 
-#weather {
+#weather, #forecast {
   padding-top: 2rem; }
 
 .card {

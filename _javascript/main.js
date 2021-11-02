@@ -37,9 +37,16 @@ function displayData(data) {
         }
     }
 
+    const forecastDiv = document.getElementById("forecast");
+    if (forecastDiv.hasChildNodes()) {
+        while (forecastDiv.firstChild) {
+            forecastDiv.firstChild.remove();
+        }
+    };
+    
     // getting current weather data
-    const tempNow = 'Temp. ' + Math.round(data.list[0].main.temp, 0) + '°C';
-    const feelsLikeNow = 'Feels like ' + Math.round(data.list[0].main.feels_like, 0) + '°C';
+    const tempNow = 'Temp. ' + Math.round(data.list[0].main.temp) + '°C';
+    const feelsLikeNow = 'Feels like ' + Math.round(data.list[0].main.feels_like) + '°C';
     const humidityNow = 'Humidity ' + data.list[0].main.humidity + '%';
     const pressureNow = `Atmospheric pressure ${data.list[0].main.grnd_level} hPa`;
     const descriptionNow = data.list[0].weather[0].description;
@@ -92,19 +99,22 @@ function displayData(data) {
     const cityPopulation = document.createElement("p");
     cityPopulation.classList.add("subtitle","is-6");
     const population = data.city.population;
+    
+    // fancy comparison with Twin Peaks :)
     let popRatio;
     let popWords;
     if (population < 51201) {
-        popRatio = Math.round(51201 / population, 2)
-        popWords = ' times smaller than Twin peaks.'
+        popRatio = Math.round((51201 / population) * 100) / 100;
+        popWords = ' times smaller than Twin Peaks.';
     } else {
-        popRatio = Math.round(population / 51201, 2);
+        popRatio = Math.round((population / 51201) * 100) / 100;
         popWords = ' times bigger than Twin Peaks.'
-    }
+    };
+
     cityPopulation.textContent = 'Population: ' + population + '\r\n'
                                 + popRatio + ' ' + popWords;
     cityName.appendChild(cityPopulation);
-    
+
     const weatherDescription = document.createElement("p");
     weatherDescription.classList.add("subtitle","is-6");
     weatherDescription.textContent = descriptionNow;
@@ -121,7 +131,64 @@ function displayData(data) {
     const timeNow = document.createElement("p");
     timeNow.textContent = cityTimeNow;
     weatherContent.appendChild(timeNow);
-    console.log(cityTimeNow);
+
+    const table = document.createElement("table");
+    const tHead = document.createElement("thead");
+    const tableHeader = document.createElement("tr");
+    const thTime = document.createElement("th");
+    thTime.textContent = "Time";
+    const thIcon = document.createElement("th");
+    thIcon.textContent = "Forecast";
+    const thTemperature = document.createElement("th");
+    thTemperature.textContent = "Temp/Feels like";
+    const thWind = document.createElement("th");
+    thWind.textContent = "Wind";
+    // const thPrecipitation = document.createElement("th");
+    // thPrecipitation.textContent = "Precipitation";
+    tableHeader.appendChild(thTime);
+    tableHeader.appendChild(thIcon);
+    tableHeader.appendChild(thTemperature);
+    tableHeader.appendChild(thWind);
+    // tableHeader.appendChild(thPrecipitation);
+    tHead.appendChild(tableHeader);
+    table.appendChild(tHead);
+    forecastDiv.appendChild(table);
+    let tableBody = document.createElement("tbody");
+    table.classList.add("table","is-bordered","is-striped","is-hoverable");
+
+    for (let i = 1; i < 40; i++) {
+        let cityTime = data.list[i].dt_txt;
+        let forecastIcon = data.list[i].weather[0].icon + '@2x.png'
+        let forecastIconUrl = 'http://openweathermap.org/img/wn/' + forecastIcon;
+        let tempForecast = Math.round(data.list[i].main.temp) + '°C';
+        let feelsLikeForecast = Math.round(data.list[i].main.feels_like) + '°C';
+        let windSpeedForecast = data.list[i].wind.speed + ' m/s';
+        let windDirectionForecastDeg = data.list[i].wind.deg;
+        // get wind direction in words
+        let windSectorForecast = Math.floor((windDirectionForecastDeg / 22.5) + 0.5);
+        const arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+        let windDirectionForecast = arr[(windSectorForecast % 16)];
+        let tableRow = document.createElement("tr");
+        let timeTime = document.createElement("td");
+        timeTime.textContent = cityTime;
+        let timeIcon = document.createElement("td");
+        let timeImg = document.createElement("img");
+        timeImg.classList.add("image","is-48x48")
+        timeImg.src = forecastIconUrl;
+        timeImg.alt = data.list[i].weather[0].description;
+        timeIcon.appendChild(timeImg);
+        //create image
+        let timeTemp = document.createElement("td");
+        timeTemp.textContent = tempForecast + '/' + feelsLikeForecast;
+        let timeWind = document.createElement("td");
+        timeWind.textContent = windSpeedForecast + ' ' + windDirectionForecast;
+        tableRow.appendChild(timeTime);
+        tableRow.appendChild(timeIcon);
+        tableRow.appendChild(timeTemp);
+        tableRow.appendChild(timeWind);
+        tableBody.appendChild(tableRow);
+    };
+    table.appendChild(tableBody);
 }
 
 getCityButton.addEventListener('click', getData);
