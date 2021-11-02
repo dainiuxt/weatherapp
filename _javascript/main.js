@@ -25,6 +25,7 @@ function getData() {
                 } else return(response.json());
             }) 
             .then(data => displayData(data));
+            cityName.value = '';
     }
 }
 
