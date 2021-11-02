@@ -44,6 +44,13 @@ function displayData(data) {
         }
     };
     
+    function convertEpochToSpecificTimezone(timeEpoch, offset){
+        let d = new Date(timeEpoch);
+        let utc = d.getTime() + (d.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
+        let nd = new Date(utc + (3600000*offset));
+        return nd.toLocaleString();
+    }
+
     // getting current weather data
     const tempNow = 'Temp. ' + Math.round(data.list[0].main.temp) + '°C';
     const feelsLikeNow = 'Feels like ' + Math.round(data.list[0].main.feels_like) + '°C';
@@ -92,7 +99,7 @@ function displayData(data) {
     mediaContent.classList.add("media-content");
     const cityName = document.createElement("p");
     cityName.classList.add("title","is-4");
-    cityName.textContent = data.city.name;
+    cityName.textContent = data.city.name + ', ' + data.city.country;
     mediaContent.appendChild(cityName);
     media.appendChild(mediaContent);
 
@@ -129,7 +136,7 @@ function displayData(data) {
                                 + windSpeedNow + ' ' + windDirection;
 
     const timeNow = document.createElement("p");
-    timeNow.textContent = cityTimeNow;
+    timeNow.textContent = convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
     weatherContent.appendChild(timeNow);
 
     const table = document.createElement("table");
@@ -158,6 +165,8 @@ function displayData(data) {
 
     for (let i = 1; i < 40; i++) {
         let cityTime = data.list[i].dt_txt;
+        let cityDate = convertEpochToSpecificTimezone(cityTime, data.city.timezone/3600);
+        let insertDate = cityDate;
         let forecastIcon = data.list[i].weather[0].icon + '@2x.png'
         let forecastIconUrl = 'http://openweathermap.org/img/wn/' + forecastIcon;
         let tempForecast = Math.round(data.list[i].main.temp) + '°C';
@@ -166,18 +175,16 @@ function displayData(data) {
         let windDirectionForecastDeg = data.list[i].wind.deg;
         // get wind direction in words
         let windSectorForecast = Math.floor((windDirectionForecastDeg / 22.5) + 0.5);
-        const arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
         let windDirectionForecast = arr[(windSectorForecast % 16)];
         let tableRow = document.createElement("tr");
         let timeTime = document.createElement("td");
-        timeTime.textContent = cityTime;
+        timeTime.textContent = insertDate;
         let timeIcon = document.createElement("td");
         let timeImg = document.createElement("img");
         timeImg.classList.add("image","is-48x48")
         timeImg.src = forecastIconUrl;
         timeImg.alt = data.list[i].weather[0].description;
         timeIcon.appendChild(timeImg);
-        //create image
         let timeTemp = document.createElement("td");
         timeTemp.textContent = tempForecast + '/' + feelsLikeForecast;
         let timeWind = document.createElement("td");
