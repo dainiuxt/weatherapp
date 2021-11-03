@@ -51,6 +51,13 @@ function displayData(data) {
         return nd.toLocaleString();
     }
 
+    // function getTimeFromEpoch(timeEpoch) {
+    //     let d = new Date(timeEpoch);
+    //     let hours = d.getHours();
+    //     let minutes = d.getMinutes();
+    //     return `${hours}:${minutes}`;
+    // }
+    
     // getting current weather data
     const tempNow = 'Temp. ' + Math.round(data.list[0].main.temp) + '°C';
     const feelsLikeNow = 'Feels like ' + Math.round(data.list[0].main.feels_like) + '°C';
@@ -62,6 +69,8 @@ function displayData(data) {
     const windSpeedNow = 'Wind: ' + data.list[0].wind.speed + ' m/s';
     const windDirectionNowDeg = data.list[0].wind.deg;
     const cityTimeNow = data.list[0].dt_txt;
+    const citySunrise = data.city.sunrise;
+    const citySunset = data.city.sunset;
 
     // get wind direction in words
     let windSector = Math.floor((windDirectionNowDeg / 22.5) + 0.5);
@@ -126,6 +135,11 @@ function displayData(data) {
     weatherDescription.classList.add("subtitle","is-6");
     weatherDescription.textContent = descriptionNow;
     cityName.appendChild(weatherDescription);
+    // const sunriseSunset = document.createElement("p");
+    // sunriseSunset.textContent = convertEpochToSpecificTimezone(citySunrise, data.city.timezone/3600);
+    // cityName.appendChild(sunriseSunset);
+    // console.log(citySunrise);
+    // console.log(sunriseSunset);
 
     const weatherContent = document.createElement("div");
     weatherContent.classList.add("content");
@@ -136,8 +150,9 @@ function displayData(data) {
                                 + windSpeedNow + ' ' + windDirection;
 
     const timeNow = document.createElement("p");
-    timeNow.textContent = convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
+    timeNow.textContent = 'Local time: ' + convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
     weatherContent.appendChild(timeNow);
+
 
     const table = document.createElement("table");
     const tHead = document.createElement("thead");
@@ -163,11 +178,12 @@ function displayData(data) {
     let tableBody = document.createElement("tbody");
     table.classList.add("table","is-bordered","is-striped","is-hoverable");
 
-    for (let i = 1; i < 40; i++) {
+    for (let i = 1; i < 40; i+=4 ) {
         let cityTime = data.list[i].dt_txt;
         let cityDate = convertEpochToSpecificTimezone(cityTime, data.city.timezone/3600);
         let insertDate = cityDate;
-        let forecastIcon = data.list[i].weather[0].icon + '@2x.png'
+        let forecastIcon = data.list[i].weather[0].icon + '@2x.png';
+        // const forecastIconUrl = 'icons/' + forecastIcon;
         let forecastIconUrl = 'http://openweathermap.org/img/wn/' + forecastIcon;
         let tempForecast = Math.round(data.list[i].main.temp) + '°C';
         let feelsLikeForecast = Math.round(data.list[i].main.feels_like) + '°C';
@@ -196,6 +212,7 @@ function displayData(data) {
         tableBody.appendChild(tableRow);
     };
     table.appendChild(tableBody);
+    tableBody.classList.add("has-text-centered");
 }
 
 getCityButton.addEventListener('click', getData);

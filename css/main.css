@@ -7148,6 +7148,6 @@ label.panel-block {
   background-color: #ebfffc;
   color: #00d1b2; }
 
-figure {
+figure, .is-48x48 {
   background-color: #00d1b2;
   border-radius: 50%; }
