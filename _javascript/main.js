@@ -3,18 +3,38 @@ const cityName = document.getElementById('city');
 const getCityButton = document.getElementById('getcity');
 const weatherDiv = document.getElementById("weather");
 const forecastDiv = document.getElementById("forecast");
-
+let data;
 let myCity;
 const direction = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+let newDateElements;
 
 function convertEpochToSpecificTimezone(timeEpoch, offset){
     let d = new Date(timeEpoch);
     let utc = d.getTime() + (d.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
     let nd = new Date(utc + (3600000*offset));
-    return nd.toLocaleString();
+    let newDay = nd.getDate();
+    let newWeekDay = weekdays[nd.getDay()];
+    let newMonth = months[nd.getMonth()];
+    let newYear = nd.getFullYear();
+    let newHour = (nd.getHours()<10?'0':'') + nd.getHours();
+    let newMinute = (nd.getMinutes()<10?'0':'') + nd.getMinutes();
+    return {
+        year:newYear,
+        month:newMonth,
+        day:newDay,
+        hour:newHour,
+        minute:newMinute,
+        weekday:newWeekDay
+    };
 }
 
-function getData() {
+function main() {
+    displayData();
+}
+
+async function getData() {
     if (cityName.value == '') {
         const alertBox = document.querySelector("#warn");
         alertBox.classList.remove('hidden');
@@ -24,22 +44,23 @@ function getData() {
     } else {
         myCity = cityName.value;
         let url = `https://api.openweathermap.org/data/2.5/forecast?q=${myCity}&APPID=ec9ae325e89111e7b15e1fe63c9092ec&units=${myUnits}`;
-        fetch(url)
-        .then(response => {
-            if (response.status !== 200) {
-                const alertBox = document.querySelector("#warn");
-                alertBox.classList.remove('hidden');
-                setTimeout(() => {
-                    alertBox.classList.add('hidden');
-                }, 2500); 
-            } else return(response.json());
-        }) 
-        .then(data => displayData(data));
-        cityName.value = '';
-    }
+        const response = await fetch(url);
+        if (response.status !== 200) {
+            const alertBox = document.querySelector("#warn");
+            alertBox.classList.remove('hidden');
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 2500); 
+        } else {
+            return response.json();
+        }
+    } 
 }
 
-function displayData(data) {
+async function displayData() {
+    const data = await getData();
+    console.log(data);
+    cityName.value = '';
     // clear the weather and the forecast div
     // on consecutive calls
     if (weatherDiv.hasChildNodes()) {
@@ -53,8 +74,7 @@ function displayData(data) {
         }
     };
     
-    // build the weather div and Bulma card
-    // for current weather
+    // Current weather card
     function currentWeather() {
         // enabling escape characters in strings
         weatherDiv.setAttribute('style', 'white-space: pre;');
@@ -64,13 +84,14 @@ function displayData(data) {
         const humidityNow = 'Humidity ' + data.list[0].main.humidity + '%';
         const pressureNow = `Atmospheric pressure ${data.list[0].main.grnd_level} hPa`;
         const descriptionNow = data.list[0].weather[0].description;
-        const weatherIcon = data.list[0].weather[0].icon + '@2x.png'
-        const weatherIconUrl = 'http://openweathermap.org/img/wn/' + weatherIcon;
+        const weatherIcon = data.list[0].weather[0].icon + '@2x.svg';
+        const weatherIconUrl = 'img/' + weatherIcon;
         const windSpeedNow = 'Wind: ' + data.list[0].wind.speed + ' m/s';
         const windDirectionNowDeg = data.list[0].wind.deg;
         const cityTimeNow = data.list[0].dt_txt;
         const citySunrise = data.city.sunrise;
         const citySunset = data.city.sunset;
+        console.log(citySunrise, citySunset);
 
         // get wind direction in words
         let windSector = Math.floor((windDirectionNowDeg / 22.5) + 0.5);
@@ -134,8 +155,16 @@ function displayData(data) {
         weatherDescription.classList.add("subtitle","is-6");
         weatherDescription.textContent = descriptionNow;
         cityName.appendChild(weatherDescription);
-        // const sunriseSunset = document.createElement("p");
-        // sunriseSunset.textContent = convertEpochToSpecificTimezone(citySunrise, data.city.timezone/3600);
+        const sunriseSunset = document.createElement("p");
+        let sunriseTime = convertEpochToSpecificTimezone(citySunrise, data.city.timezone/36 + 1);
+        const sunriseSpan = document.createElement("span");
+        sunriseSpan.textContent = 'Sunrise: ' + sunriseTime.hour + ':' + sunriseTime.minute;
+        sunriseSunset.appendChild(sunriseSpan);
+        
+        const sunsetSpan = document.createElement("span");
+        let sunsetTime = convertEpochToSpecificTimezone(citySunset, data.city.timezone/36 + 1);
+        sunsetSpan.textContent = 'Sunset: ' + sunsetTime.hour + ':' + sunsetTime.minute;
+        sunriseSunset.appendChild(sunsetSpan);
         // cityName.appendChild(sunriseSunset);
         // console.log(citySunrise);
         // console.log(sunriseSunset);
@@ -144,15 +173,19 @@ function displayData(data) {
         weatherContent.classList.add("content");
         cardContent.appendChild(weatherContent);
         weatherContent.textContent = tempNow + ' / ' + feelsLikeNow + '\r\n'
-                                    + humidityNow + ' / ' + pressureNow + '\r\n'
+                                    + humidityNow + '\r\n' + pressureNow + '\r\n'
                                     + windSpeedNow + ' ' + windDirection;
 
         const timeNow = document.createElement("p");
-        timeNow.textContent = 'Local time: ' + convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
+        newDateElements = convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
+        timeNow.textContent = newDateElements.year + ' ' + newDateElements.month + ' ' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
         weatherContent.appendChild(timeNow);
     }
 
+    // Forecast table below
     function forecastWeather() {
+        // enabling escape characters in strings
+        weatherDiv.setAttribute('style', 'white-space: pre;');
         const table = document.createElement("table");
         const tHead = document.createElement("thead");
         const tableHeader = document.createElement("tr");
@@ -179,15 +212,15 @@ function displayData(data) {
         table.appendChild(tHead);
         forecastDiv.appendChild(table);
         const tableBody = document.createElement("tbody");
-        table.classList.add("table","is-bordered","is-striped","is-hoverable");
+        table.classList.add("table","is-striped","is-hoverable");
 
         for (let i = 1; i < 40; i+=4 ) {
             let cityTime = data.list[i].dt_txt;
-            let cityDate = convertEpochToSpecificTimezone(cityTime, data.city.timezone/3600);
-            let insertDate = cityDate;
-            let forecastIcon = data.list[i].weather[0].icon + '@2x.png';
-            // const forecastIconUrl = 'icons/' + forecastIcon;
-            let forecastIconUrl = 'http://openweathermap.org/img/wn/' + forecastIcon;
+            newDateElements = convertEpochToSpecificTimezone(cityTime, data.city.timezone/3600);
+
+            let insertDate = newDateElements.month + ' ' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
+            let forecastIcon = data.list[i].weather[0].icon + '@2x.svg';
+            let forecastIconUrl = 'img/' + forecastIcon;
             let tempForecast = Math.round(data.list[i].main.temp) + '°C';
             let feelsLikeForecast = Math.round(data.list[i].main.feels_like) + '°C';
             let windSpeedForecast = data.list[i].wind.speed + ' m/s';
@@ -220,12 +253,11 @@ function displayData(data) {
 
     currentWeather();
     forecastWeather();
-    
 }
 
-getCityButton.addEventListener('click', getData);
+getCityButton.addEventListener('click', main);
 cityName.addEventListener('keydown', function(event) {
     if (event.code === 'Enter') {
-        getData();
+        main();
     }
 });
