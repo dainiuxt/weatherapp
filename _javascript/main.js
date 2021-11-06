@@ -60,6 +60,20 @@ async function getData() {
     console.log('My return: ' + data)
 }
 
+
+function getLocation() {
+  if (window.navigator.geolocation) {
+    window.navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  alert("Lat: " + position.coords.latitude +
+  ", Lon: " + position.coords.longitude);
+}
+
 async function displayData() {
     const data = await getData();
     // console.log(data);
@@ -264,3 +278,5 @@ cityName.addEventListener('keydown', function(event) {
         main();
     }
 });
+
+getLocation();
