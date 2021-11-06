@@ -41,6 +41,7 @@ async function getData() {
         setTimeout(() => {
             alertBox.classList.add('hidden');
         }, 2500);
+        data = null;
     } else {
         myCity = cityName.value;
         let url = `https://api.openweathermap.org/data/2.5/forecast?q=${myCity}&APPID=ec9ae325e89111e7b15e1fe63c9092ec&units=${myUnits}`;
@@ -50,16 +51,18 @@ async function getData() {
             alertBox.classList.remove('hidden');
             setTimeout(() => {
                 alertBox.classList.add('hidden');
-            }, 2500); 
+            }, 2500);
+            data = null;
         } else {
             return response.json();
         }
-    } 
+    }
+    console.log('My return: ' + data)
 }
 
 async function displayData() {
     const data = await getData();
-    console.log(data);
+    // console.log(data);
     cityName.value = '';
     // clear the weather and the forecast div
     // on consecutive calls
@@ -156,10 +159,10 @@ async function displayData() {
         weatherDescription.textContent = descriptionNow;
         cityName.appendChild(weatherDescription);
         const sunriseSunset = document.createElement("p");
-        let sunriseTime = convertEpochToSpecificTimezone(citySunrise, data.city.timezone/36 + 1);
-        const sunriseSpan = document.createElement("span");
-        sunriseSpan.textContent = 'Sunrise: ' + sunriseTime.hour + ':' + sunriseTime.minute;
-        sunriseSunset.appendChild(sunriseSpan);
+        // let sunriseTime = convertEpochToSpecificTimezone(citySunrise, data.city.timezone/36 + 1);
+        // const sunriseSpan = document.createElement("span");
+        // sunriseSpan.textContent = 'Sunrise: ' + sunriseTime.hour + ':' + sunriseTime.minute;
+        // sunriseSunset.appendChild(sunriseSpan);
         
         const sunsetSpan = document.createElement("span");
         let sunsetTime = convertEpochToSpecificTimezone(citySunset, data.city.timezone/36 + 1);
@@ -167,7 +170,7 @@ async function displayData() {
         sunriseSunset.appendChild(sunsetSpan);
         // cityName.appendChild(sunriseSunset);
         // console.log(citySunrise);
-        // console.log(sunriseSunset);
+        console.log(sunsetTime.hour);
 
         const weatherContent = document.createElement("div");
         weatherContent.classList.add("content");
