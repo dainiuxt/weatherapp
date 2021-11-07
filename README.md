@@ -6,7 +6,15 @@ Weather app built with Bulma and JS.
 
 [API link](https://openweathermap.org/api)
 
+Added weather and forecast functionality.
 
+Added language and units selection and translation.
+
+### ToDo
+
+* Search the same (already searched) city on units or language change.
+
+---
 
 Tiny npm package that includes the `npm` **dependencies** you need to **build your own website** with Bulma.
 
