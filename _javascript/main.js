@@ -48,6 +48,10 @@ function update() {
         forecastText = 'Forecast';
         document.getElementById('city').placeholder='Search for a city...';
         document.getElementById('getcity').value='Forecast';
+        document.title = 'Simple Weather App';
+        document.getElementById('h1title').textContent = 'Simple Weather App';
+        document.getElementById('subtitleBegin').textContent = 'Simple weather app with ';
+        document.getElementById('subtitleEnd').textContent = 'Choose your city below for weather conditions and forecast.';
     }
     if (language == 'lt') {
         weekdays = ['Sek', 'Pir', 'Ant', 'Tre', 'Ket', 'Pen', 'Šeš'];
@@ -63,6 +67,10 @@ function update() {
         forecastText = 'Prognozė';
         document.getElementById('city').placeholder='Ieškokite miesto...';
         document.getElementById('getcity').value='Prognozė';
+        document.title = 'Paprasta orų programėlė';
+        document.getElementById('h1title').textContent = 'Paprasta orų programėlė';
+        document.getElementById('subtitleBegin').textContent = 'Paprasta orų programėlė su ';
+        document.getElementById('subtitleEnd').textContent = 'Pasirinkite savo miestą žemiau, kad gautumėte orų prognozę.';
     } 
     if (language == 'ru') {
         weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
@@ -78,6 +86,10 @@ function update() {
         forecastText = 'Прогноз';
         document.getElementById('city').placeholder='Поиск города...';
         document.getElementById('getcity').value='Прогноз';
+        document.title = 'Простая программа прогноз';
+        document.getElementById('h1title').textContent = 'Простая программа прогноз';
+        document.getElementById('subtitleBegin').textContent = 'Простая программа прогноз с ';
+        document.getElementById('subtitleEnd').textContent = 'Выберите город ниже, чтобы получить прогноз.';
     }
 }
 
