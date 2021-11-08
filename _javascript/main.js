@@ -106,12 +106,12 @@ function convertEpochToSpecificTimezone(timeEpoch, offset){
     let newHour = (nd.getHours()<10?'0':'') + nd.getHours();
     let newMinute = (nd.getMinutes()<10?'0':'') + nd.getMinutes();
     return {
-        year:newYear,
-        month:newMonth,
-        day:newDay,
-        hour:newHour,
-        minute:newMinute,
-        weekday:newWeekDay
+        year:newYear.toString(),
+        month:newMonth.toString(),
+        day:newDay.toString(),
+        hour:newHour.toString(),
+        minute:newMinute.toString(),
+        weekday:newWeekDay.toString()
     };
 }
 
@@ -340,6 +340,7 @@ async function displayData() {
         for (let i = 1; i < 40; i+=4 ) {
             let cityTime = data.list[i].dt_txt;
             newDateElements = convertEpochToSpecificTimezone(cityTime, data.city.timezone/3600);
+            console.log(typeof newDateElements.year + '-' + typeof newDateElements.month + '-' + typeof newDateElements.day + ' ' + typeof newDateElements.hour + ':' + typeof newDateElements.minute)
 
             let insertDate = newDateElements.month + ' ' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
             let forecastIcon = data.list[i].weather[0].icon + '@2x.svg';
@@ -387,9 +388,3 @@ cityName.addEventListener('keydown', function(event) {
 
 units.addEventListener('change', update);
 lang.addEventListener('change', update);
-
-// units.addEventListener('select', () => {
-//     myUnits = units.value;
-//     // main();
-// })
-// getLocation();
