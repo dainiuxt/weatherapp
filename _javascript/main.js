@@ -300,7 +300,9 @@ async function displayData() {
 
         const timeNow = document.createElement('p');
         newDateElements = convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
-        timeNow.textContent = (newDateElements.year + ' ' + newDateElements.month + ' ' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute).toString();
+        let TNtextContent = newDateElements.year + '-' + newDateElements.month + '-' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
+        timeNow.textContent = TNtextContent;
+        console.log(typeof TNtextContent);
         weatherContent.appendChild(timeNow);
     }
 
@@ -340,7 +342,8 @@ async function displayData() {
             let cityTime = data.list[i].dt_txt;
             newDateElements = convertEpochToSpecificTimezone(cityTime, data.city.timezone/3600);
 
-            let insertDate = newDateElements.month + ' ' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
+            let insertDate = newDateElements.month + '-' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
+            console.log(typeof insertDate);
             let forecastIcon = data.list[i].weather[0].icon + '@2x.svg';
             let forecastIconUrl = 'img/' + forecastIcon;
             let tempForecast = Math.round(data.list[i].main.temp) + dimensions.deg;
