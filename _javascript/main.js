@@ -35,8 +35,8 @@ function update() {
     }
     // translations
     if (language == 'en') {
-        weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        // weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        // months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         direction = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
         tempText = 'Temp.';
         feelsLikeText = 'Feels like';
@@ -54,8 +54,8 @@ function update() {
         document.getElementById('subtitleEnd').textContent = 'Choose your city below for weather conditions and forecast.';
     }
     if (language == 'lt') {
-        weekdays = ['Sek', 'Pir', 'Ant', 'Tre', 'Ket', 'Pen', 'Šeš'];
-        months = ['Sau', 'Vas', 'Kov', 'Bal', 'Geg', 'Bir', 'Lie', 'Rgp', 'Rgs', 'Spl', 'Lap', 'Grd'];
+        // weekdays = ['Sek', 'Pir', 'Ant', 'Tre', 'Ket', 'Pen', 'Šeš'];
+        // months = ['Sau', 'Vas', 'Kov', 'Bal', 'Geg', 'Bir', 'Lie', 'Rgp', 'Rgs', 'Spl', 'Lap', 'Grd'];
         direction = ['Š', 'ŠŠR', 'ŠR', 'RŠR', 'R', 'RPR', 'PR', 'PRP', 'P', 'PPV', 'PV', 'VPV', 'V', 'VŠV', 'ŠV', 'ŠŠV'];
         tempText = 'Temp.';
         feelsLikeText = 'Pojūtis';
@@ -73,8 +73,8 @@ function update() {
         document.getElementById('subtitleEnd').textContent = 'Pasirinkite savo miestą žemiau, kad gautumėte orų prognozę.';
     } 
     if (language == 'ru') {
-        weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-        months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+        // weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        // months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
         direction = ['С', 'ССВ', 'СВ', 'ВСВ', 'В', 'ВЮВ', 'ЮВ', 'ЮЮВ', 'Ю', 'ЮЮЗ', 'ЮЗ', 'ЗЮЗ', 'З', 'ЗСЗ', 'СЗ', 'ССЗ'];
         tempText = 'Темп.';
         feelsLikeText = 'Ощущается как';
@@ -93,27 +93,34 @@ function update() {
     }
 }
 
-let newDateElements;
+// let newDateElements;
 
-function convertEpochToSpecificTimezone(timeEpoch, offset){
-    let d = new Date(timeEpoch);
-    let utc = d.getTime() + (d.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
-    let nd = new Date(utc + (3600000*offset));
-    let newDay = nd.getDate();
-    let newWeekDay = weekdays[nd.getDay()];
-    let newMonth = months[nd.getMonth()];
-    let newYear = nd.getFullYear();
-    let newHour = (nd.getHours()<10?'0':'') + nd.getHours();
-    let newMinute = (nd.getMinutes()<10?'0':'') + nd.getMinutes();
-    return {
-        year:newYear,
-        month:newMonth,
-        day:newDay,
-        hour:newHour,
-        minute:newMinute,
-        weekday:newWeekDay
-    };
-}
+// function convertEpochToSpecificTimezone(timeEpoch, offset){
+//     let d = new Date(timeEpoch);
+//     let utc = d.getTime() + (d.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
+//     let nd = new Date(utc + (3600000*offset));
+//     let newDay = nd.getDate();
+//     let newWeekDay = weekdays[nd.getDay()];
+//     let newMonth = months[nd.getMonth()];
+//     let newYear = nd.getFullYear();
+//     let newHour = (nd.getHours()<10?'0':'') + nd.getHours();
+//     let newMinute = (nd.getMinutes()<10?'0':'') + nd.getMinutes();
+//     return {
+//         year:newYear,
+//         month:newMonth,
+//         day:newDay,
+//         hour:newHour,
+//         minute:newMinute,
+//         weekday:newWeekDay
+//     };
+// }
+
+// let timeConstructs = {
+//     date: dayjs().locale(`${language}`).format('YYYY-MMM-DD'),
+//     short: dayjs().locale(`${language}`).format('MMM-DD'),
+//     time: dayjs().format('HH:mm'),
+//     day: dayjs().locale(`${language}`).format('ddd')
+//   }
 
 function main() {
     displayData();
@@ -195,9 +202,10 @@ async function displayData() {
         const windSpeedNow = windText + ' ' + data.list[0].wind.speed + ' ' + dimensions.windspeed;
         const windDirectionNowDeg = data.list[0].wind.deg;
         const cityTimeNow = data.list[0].dt_txt;
-        const citySunrise = data.city.sunrise;
-        const citySunset = data.city.sunset;
-        console.log(citySunrise, citySunset);
+        // const cityTimeNow = data.list[0].dt_txt;
+        // const citySunrise = data.city.sunrise;
+        // const citySunset = data.city.sunset;
+        // console.log(citySunrise, citySunset);
 
         // get wind direction in words
         let windSector = Math.floor((windDirectionNowDeg / 22.5) + 0.5);
@@ -277,19 +285,19 @@ async function displayData() {
         weatherDescription.classList.add('subtitle','is-6');
         weatherDescription.textContent = descriptionNow;
         cityName.appendChild(weatherDescription);
-        const sunriseSunset = document.createElement('p');
+        // const sunriseSunset = document.createElement('p');
         // let sunriseTime = convertEpochToSpecificTimezone(citySunrise, data.city.timezone/36 + 1);
         // const sunriseSpan = document.createElement('span');
         // sunriseSpan.textContent = 'Sunrise: ' + sunriseTime.hour + ':' + sunriseTime.minute;
         // sunriseSunset.appendChild(sunriseSpan);
         
-        const sunsetSpan = document.createElement('span');
-        let sunsetTime = convertEpochToSpecificTimezone(citySunset, data.city.timezone/36 + 1);
-        sunsetSpan.textContent = 'Sunset: ' + sunsetTime.hour + ':' + sunsetTime.minute;
-        sunriseSunset.appendChild(sunsetSpan);
+        // const sunsetSpan = document.createElement('span');
+        // let sunsetTime = convertEpochToSpecificTimezone(citySunset, data.city.timezone/36 + 1);
+        // sunsetSpan.textContent = 'Sunset: ' + sunsetTime.hour + ':' + sunsetTime.minute;
+        // sunriseSunset.appendChild(sunsetSpan);
         // cityName.appendChild(sunriseSunset);
         // console.log(citySunrise);
-        console.log(sunsetTime.hour);
+        // console.log(sunsetTime.hour);
 
         const weatherContent = document.createElement('div');
         weatherContent.classList.add('content');
@@ -299,10 +307,11 @@ async function displayData() {
                                     + windSpeedNow + ' ' + windDirection;
 
         const timeNow = document.createElement('p');
-        newDateElements = convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
-        let TNtextContent = newDateElements.year + '-' + newDateElements.month + '-' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
-        timeNow.textContent = TNtextContent;
-        console.log(typeof TNtextContent);
+        timeNow.textContent = dayjs(cityTimeNow).locale(`${language}`).format('YYYY MMM DD');
+        // newDateElements = convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
+        // let TNtextContent = newDateElements.year + '-' + newDateElements.month + '-' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
+        // timeNow.textContent = TNtextContent;
+        // console.log(typeof TNtextContent);
         weatherContent.appendChild(timeNow);
     }
 
@@ -340,10 +349,12 @@ async function displayData() {
 
         for (let i = 1; i < 40; i+=4 ) {
             let cityTime = data.list[i].dt_txt;
-            newDateElements = convertEpochToSpecificTimezone(cityTime, data.city.timezone/3600);
+            let insertDate = dayjs(cityTime).locale(`${language}`).format('MMM DD HH:mm');
+            let insertWeekday = dayjs(cityTime).locale(`${language}`).format('ddd');
+            // newDateElements = convertEpochToSpecificTimezone(cityTime, data.city.timezone/3600);
 
-            let insertDate = newDateElements.month + '-' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
-            console.log(typeof insertDate);
+            // let insertDate = newDateElements.month + '-' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
+            // console.log(typeof insertDate);
             let forecastIcon = data.list[i].weather[0].icon + '@2x.svg';
             let forecastIconUrl = 'img/' + forecastIcon;
             let tempForecast = Math.round(data.list[i].main.temp) + dimensions.deg;
@@ -355,7 +366,7 @@ async function displayData() {
             let windDirectionForecast = direction[(windSectorForecast % 16)];
             let tableRow = document.createElement('tr');
             let timeTime = document.createElement('td');
-            timeTime.textContent = insertDate;
+            timeTime.textContent = insertDate + ' ' + insertWeekday;
             let timeIcon = document.createElement('td');
             let timeImg = document.createElement('img');
             timeImg.classList.add('image','is-48x48')
