@@ -35,8 +35,8 @@ function update() {
     }
     // translations
     if (language == 'en') {
-        // weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        // months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         direction = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
         tempText = 'Temp.';
         feelsLikeText = 'Feels like';
@@ -54,8 +54,8 @@ function update() {
         document.getElementById('subtitleEnd').textContent = 'Choose your city below for weather conditions and forecast.';
     }
     if (language == 'lt') {
-        // weekdays = ['Sek', 'Pir', 'Ant', 'Tre', 'Ket', 'Pen', 'Šeš'];
-        // months = ['Sau', 'Vas', 'Kov', 'Bal', 'Geg', 'Bir', 'Lie', 'Rgp', 'Rgs', 'Spl', 'Lap', 'Grd'];
+        weekdays = ['Sek', 'Pir', 'Ant', 'Tre', 'Ket', 'Pen', 'Šeš'];
+        months = ['Sau', 'Vas', 'Kov', 'Bal', 'Geg', 'Bir', 'Lie', 'Rgp', 'Rgs', 'Spl', 'Lap', 'Grd'];
         direction = ['Š', 'ŠŠR', 'ŠR', 'RŠR', 'R', 'RPR', 'PR', 'PRP', 'P', 'PPV', 'PV', 'VPV', 'V', 'VŠV', 'ŠV', 'ŠŠV'];
         tempText = 'Temp.';
         feelsLikeText = 'Pojūtis';
@@ -73,8 +73,8 @@ function update() {
         document.getElementById('subtitleEnd').textContent = 'Pasirinkite savo miestą žemiau, kad gautumėte orų prognozę.';
     } 
     if (language == 'ru') {
-        // weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-        // months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+        weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
         direction = ['С', 'ССВ', 'СВ', 'ВСВ', 'В', 'ВЮВ', 'ЮВ', 'ЮЮВ', 'Ю', 'ЮЮЗ', 'ЮЗ', 'ЗЮЗ', 'З', 'ЗСЗ', 'СЗ', 'ССЗ'];
         tempText = 'Темп.';
         feelsLikeText = 'Ощущается как';
@@ -93,27 +93,27 @@ function update() {
     }
 }
 
-// let newDateElements;
+let newDateElements;
 
-// function convertEpochToSpecificTimezone(timeEpoch, offset){
-//     let d = new Date(timeEpoch);
-//     let utc = d.getTime() + (d.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
-//     let nd = new Date(utc + (3600000*offset));
-//     let newDay = nd.getDate();
-//     let newWeekDay = weekdays[nd.getDay()];
-//     let newMonth = months[nd.getMonth()];
-//     let newYear = nd.getFullYear();
-//     let newHour = (nd.getHours()<10?'0':'') + nd.getHours();
-//     let newMinute = (nd.getMinutes()<10?'0':'') + nd.getMinutes();
-//     return {
-//         year:newYear,
-//         month:newMonth,
-//         day:newDay,
-//         hour:newHour,
-//         minute:newMinute,
-//         weekday:newWeekDay
-//     };
-// }
+function convertEpochToSpecificTimezone(timeEpoch, offset){
+    let d = new Date(timeEpoch);
+    let utc = d.getTime() + (d.getTimezoneOffset() * 60000);  //This converts to UTC 00:00
+    let nd = new Date(utc + (3600000*offset));
+    let newDay = nd.getDate();
+    let newWeekDay = weekdays[nd.getDay()];
+    let newMonth = months[nd.getMonth()];
+    let newYear = nd.getFullYear();
+    let newHour = (nd.getHours()<10?'0':'') + nd.getHours();
+    let newMinute = (nd.getMinutes()<10?'0':'') + nd.getMinutes();
+    return {
+        year:newYear,
+        month:newMonth,
+        day:newDay,
+        hour:newHour,
+        minute:newMinute,
+        weekday:newWeekDay
+    };
+}
 
 // let timeConstructs = {
 //     date: dayjs().locale(`${language}`).format('YYYY-MMM-DD'),
@@ -307,11 +307,11 @@ async function displayData() {
                                     + windSpeedNow + ' ' + windDirection;
 
         const timeNow = document.createElement('p');
-        timeNow.textContent = dayjs(cityTimeNow).locale(`${language}`).format('YYYY MMM DD');
-        // newDateElements = convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
-        // let TNtextContent = newDateElements.year + '-' + newDateElements.month + '-' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
+        newDateElements = convertEpochToSpecificTimezone(cityTimeNow, data.city.timezone/3600);
+        let TNtextContent = newDateElements.year + '-' + newDateElements.month + '-' + newDateElements.day + ', ' + newDateElements.weekday + ' ' + newDateElements.hour + ':' + newDateElements.minute;
         // timeNow.textContent = TNtextContent;
-        // console.log(typeof TNtextContent);
+        console.log(typeof TNtextContent);
+        timeNow.textContent = dayjs(cityTimeNow).locale(`${language}`).format('YYYY MMM DD') + ' date before / string after ' + TNtextContent;
         weatherContent.appendChild(timeNow);
     }
 
